@@ -1,0 +1,24 @@
+name: 'Hugo website deploy action'
+author: 'Kusnadi'
+description: 'Deploy static files generated from a Hugo website repo to gh-pages branch of the same repo'
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v2.3.5
+      with:
+        submodules: false          
+        fetch-depth: 0
+    - name: create gh-pages branch if not exist
+      uses: christopherdavenport/create-ghpages-ifnotexists@v1
+    - name: Setup Hugo
+      uses: peaceiris/actions-hugo@v2.4.13
+      with:
+        hugo-version: 'latest'
+    - name: Build
+      run: hugo 
+    - name: Deploy
+      uses: peaceiris/actions-github-pages@v3.1.12
+      if: ${{ github.ref == 'refs/heads/main' }}
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public
