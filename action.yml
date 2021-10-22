@@ -18,8 +18,10 @@ runs:
       with:
         hugo-version: 'latest'
     - name: Build
+      shell: bash
       run: hugo 
     - name: Deploy
+      shell: bash
       uses: peaceiris/actions-github-pages@v3.1.12
       if: ${{ github.ref == 'refs/heads/main' }}
       with:
